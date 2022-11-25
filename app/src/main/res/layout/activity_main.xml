@@ -26,22 +26,15 @@
         android:layout_height="match_parent"
         >
 
-    <ImageView
-        android:id="@+id/gameboard"
-        android:src="@drawable/dark_bg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
-        android:layout_centerVertical="true"
-        android:contentDescription="game board"
-        />
-
-    <griffith.taehyung.assign2_arimaa.GameView
-        android:id="@+id/gameview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        <griffith.taehyung.assign2_arimaa.GameView
+            android:id="@+id/board"
+            android:background="@drawable/light_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:layout_centerVertical="true"
+            />
 
     </RelativeLayout>
 
