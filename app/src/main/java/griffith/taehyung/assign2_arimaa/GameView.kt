@@ -3,6 +3,8 @@ package griffith.taehyung.assign2_arimaa
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -11,6 +13,10 @@ class GameView(context: Context?): View(context){
     private var _context: Context? = context
     private var _attribs: AttributeSet? = null
     private var _defStyleAttr: Int? = null
+
+    private var width: Int? = 0
+    private var height: Int?  = 0
+
     var pieces: Bitmap? = null
     var moveable: Bitmap? = null
     var held: Bitmap? = null
@@ -19,11 +25,7 @@ class GameView(context: Context?): View(context){
 
     var tilesize = 0
 
-    //size of background image, currently use as a SQUARE
-    private var width: Int? = 0
-    private var height: Int?  = 0
 
-    //tie background image choice to user selection in preferences
     constructor(context: Context, attrs: AttributeSet?) : this(context) {
         _attribs = attrs
     }
@@ -36,15 +38,39 @@ class GameView(context: Context?): View(context){
     }
 
     init {
-        setBackgroundResource(R.drawable.light_bg)
+//        setBackgroundResource(R.drawable.light_bg)
     }
 
-    fun setWindowWidth(windowWidth: Int) {
-        width = windowWidth
-        height = windowWidth
+//    fun setWindowWidth(windowWidth: Int) {
+//        width = windowWidth
+//        height = windowWidth
+//    }
+
+    fun setTileSize(windowWidth: Int) {
+        tilesize = windowWidth / TILES
     }
 
-    //set to square view, based on height
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        width = w
+        height = h
+    }
+
+    fun drawBoard(canvas: Canvas?, tilesize: Int) {
+        val paint = Paint()
+        for (i in 0 until TILES) {
+            for (k in 0 until TILES) {
+                if(i == 2 &&  k == 2 || i == 5 && k ==2 || i == 2 && k == 5 || i == 5 && k == 5) {
+                    paint.color = Color.DKGRAY
+                } else
+                    paint.color = Color.LTGRAY
+
+                canvas?.drawRect(0f+tilesize * i, 0f+tilesize * k, 0f+tilesize+tilesize*i, 0f+tilesize+tilesize*k, paint)
+            }
+        }
+    }
+
+    // set to square view, based on height
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         if (widthMeasureSpec < heightMeasureSpec)
             super.onMeasure(
@@ -56,7 +82,11 @@ class GameView(context: Context?): View(context){
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
+        println("Test " + width)
+        setTileSize(width!!)
+        println("final:" + tilesize)
 
+        drawBoard(canvas, tilesize)
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -68,3 +98,5 @@ class GameView(context: Context?): View(context){
         const val TILES = 8
     }
 }
+
+
