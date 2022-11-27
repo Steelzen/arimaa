@@ -57,15 +57,22 @@ class GameView(context: Context?): View(context){
     }
 
     fun drawBoard(canvas: Canvas?, tilesize: Int) {
-        val paint = Paint()
+        val fillPaint = Paint()
+        val strokePaint = Paint()
+
+        fillPaint.setStyle(Paint.Style.FILL)
+        strokePaint.setStyle(Paint.Style.STROKE)
+        strokePaint.setColor(Color.BLACK)
+
         for (i in 0 until TILES) {
             for (k in 0 until TILES) {
                 if(i == 2 &&  k == 2 || i == 5 && k ==2 || i == 2 && k == 5 || i == 5 && k == 5) {
-                    paint.color = Color.DKGRAY
+                    fillPaint.setColor(Color.DKGRAY)
                 } else
-                    paint.color = Color.LTGRAY
+                    fillPaint.setColor(Color.LTGRAY)
 
-                canvas?.drawRect(0f+tilesize * i, 0f+tilesize * k, 0f+tilesize+tilesize*i, 0f+tilesize+tilesize*k, paint)
+                canvas?.drawRect(0f+tilesize * i, 0f+tilesize * k, 0f+tilesize+tilesize*i, 0f+tilesize+tilesize*k, fillPaint)
+                canvas?.drawRect(0f+tilesize * i, 0f+tilesize * k, 0f+tilesize+tilesize*i, 0f+tilesize+tilesize*k, strokePaint)
             }
         }
     }
@@ -82,9 +89,7 @@ class GameView(context: Context?): View(context){
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        println("Test " + width)
         setTileSize(width!!)
-        println("final:" + tilesize)
 
         drawBoard(canvas, tilesize)
     }
