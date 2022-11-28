@@ -32,7 +32,6 @@
 
         <griffith.taehyung.assign2_arimaa.GameView
             android:id="@+id/board"
-            android:background="@drawable/light_bg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"

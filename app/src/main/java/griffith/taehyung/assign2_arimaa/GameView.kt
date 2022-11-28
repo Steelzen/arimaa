@@ -41,10 +41,6 @@ class GameView(context: Context?): View(context){
 //        setBackgroundResource(R.drawable.light_bg)
     }
 
-//    fun setWindowWidth(windowWidth: Int) {
-//        width = windowWidth
-//        height = windowWidth
-//    }
 
     fun setTileSize(windowWidth: Int) {
         tilesize = windowWidth / TILES
@@ -77,6 +73,10 @@ class GameView(context: Context?): View(context){
         }
     }
 
+    fun drawPiece(canvas: Canvas?, tilesize: Int) {
+
+    }
+
     // set to square view, based on height
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         if (widthMeasureSpec < heightMeasureSpec)
@@ -92,6 +92,7 @@ class GameView(context: Context?): View(context){
         setTileSize(width!!)
 
         drawBoard(canvas, tilesize)
+        drawPiece(canvas, tilesize)
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
