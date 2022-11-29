@@ -62,7 +62,7 @@ class GameView(context: Context?): View(context){
 
         for (i in 0 until TILES) {
             for (k in 0 until TILES) {
-                if(i == 2 &&  k == 2 || i == 5 && k ==2 || i == 2 && k == 5 || i == 5 && k == 5) {
+                if(i == 2 && k == 2 || i == 5 && k ==2 || i == 2 && k == 5 || i == 5 && k == 5) {
                     fillPaint.setColor(Color.DKGRAY)
                 } else
                     fillPaint.setColor(Color.LTGRAY)
