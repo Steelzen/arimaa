@@ -1,5 +1,7 @@
 package griffith.taehyung.assign2_arimaa
 
+import android.graphics.Rect
+
 class Square {
     // design trap tile (boolean)
     var piece: Piece? = null
@@ -28,5 +30,13 @@ class Square {
         isEmpty = true
 
         return droppedPiece
+    }
+
+    // obtain rectangular by tilesize and squares matrix
+    fun rectFromSquare(tileSize: Int, rowInArray: Int, columnInArray: Int): Rect {
+        return Rect(columnInArray * tileSize,
+            rowInArray * tileSize,
+            (columnInArray + 1) * tileSize,
+            (rowInArray + 1) * tileSize )
     }
 }

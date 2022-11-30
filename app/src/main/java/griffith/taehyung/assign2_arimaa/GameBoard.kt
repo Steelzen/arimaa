@@ -1,17 +1,23 @@
 package griffith.taehyung.assign2_arimaa
 
+import android.graphics.Rect
 import griffith.taehyung.assign2_arimaa.Piece.PieceColor
 import griffith.taehyung.assign2_arimaa.Piece.PieceType
 
 
-class GameBoard {
+class GameBoard(tileSize: Int) {
+    // declare squares matrix. And with this, declare rectangular
+    // matrix according to squares
     var squares = Array(8) { arrayOfNulls<Square>(8) }
+    var rects = Array(8) { arrayOfNulls<Rect>(8)}
 
     // set initial position of pieces
     init {
         for(i in 0..7)
-            for(k in 0..7)
+            for(k in 0..7) {
                 squares[i][k] = Square()
+                rects[i][k] = squares[i][k]!!.rectFromSquare(tileSize, i, k)
+            }
 
         // For Silver
         squares[0][0]!!.havePiece(Piece(PieceColor.SILVER, PieceType.RABBIT))
