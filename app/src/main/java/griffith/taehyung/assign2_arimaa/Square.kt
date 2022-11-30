@@ -6,8 +6,8 @@ class Square {
     var isEmpty = true
 
     // data to identify the type of pieces
-    val level: Int = piece!!.level
-    val color: Piece.PieceColor = piece!!.color
+    var level: Int? = piece?.level
+    val color: Piece.PieceColor? = piece?.color
 
     fun readSquare(): Char {
         return if(isEmpty) {
