@@ -13,6 +13,11 @@ class GameBoard(tileSize: Int) {
 
     // set initial position of pieces
     init {
+        removeAllPieces()
+        reset(tileSize)
+    }
+
+    fun reset(tileSize: Int) {
         for(i in 0..7)
             for(k in 0..7) {
                 squares[i][k] = Square()
@@ -54,5 +59,11 @@ class GameBoard(tileSize: Int) {
         squares[6][5]!!.havePiece(Piece(PieceColor.GOLD, PieceType.HORSE))
         squares[6][6]!!.havePiece(Piece(PieceColor.GOLD, PieceType.DOG))
         squares[6][7]!!.havePiece(Piece(PieceColor.GOLD, PieceType.CAT))
+    }
+
+    fun removeAllPieces() {
+        for(i in 0..7)
+            for(k in 0..7)
+                squares[i][k]?.dropPiece()
     }
 }

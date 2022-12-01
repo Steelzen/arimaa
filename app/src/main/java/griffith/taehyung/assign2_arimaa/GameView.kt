@@ -96,8 +96,18 @@ class GameView(context: Context?): View(context){
                 } else
                     fillPaint.setColor(Color.LTGRAY)
 
-                canvas?.drawRect(0f+tilesize * i, 0f+tilesize * k, 0f+tilesize+tilesize*i, 0f+tilesize+tilesize*k, fillPaint)
-                canvas?.drawRect(0f+tilesize * i, 0f+tilesize * k, 0f+tilesize+tilesize*i, 0f+tilesize+tilesize*k, strokePaint)
+                canvas?.drawRect(
+                    0f+tilesize * i,
+                    0f+tilesize * k,
+                    0f+tilesize+tilesize*i,
+                    0f+tilesize+tilesize*k,
+                    fillPaint)
+                canvas?.drawRect(
+                    0f+tilesize * i,
+                    0f+tilesize * k,
+                    0f+tilesize+tilesize*i,
+                    0f+tilesize+tilesize*k,
+                    strokePaint)
             }
         }
     }
@@ -172,7 +182,6 @@ class GameView(context: Context?): View(context){
             (p!!.x + 1) * tilesize,
             (p!!.y + 1 ) * tilesize)
     }
-
 
     fun getPointFromPieceLetter(pieceLetter: Char): Point? {
         return when (pieceLetter) {
