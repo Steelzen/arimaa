@@ -66,4 +66,14 @@ class GameBoard(tileSize: Int) {
             for(k in 0..7)
                 squares[i][k]?.dropPiece()
     }
+
+    // read board state and keep it as string
+    val boardState: String
+        get() {
+            var state = ""
+            for(i in 7 downTo 0)
+                for(k in 0 .. 7)
+                    state += squares[i][k]?.readSquare()
+            return state
+        }
 }

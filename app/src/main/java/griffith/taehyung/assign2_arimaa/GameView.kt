@@ -5,6 +5,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import java.util.Stack
 
 class GameView(context: Context?): View(context){
     private var _context: Context? = context
@@ -17,8 +18,9 @@ class GameView(context: Context?): View(context){
     var moveable: Bitmap? = null
     var held: Bitmap? = null
 
+    // history stack to keep a gameboard state
+    var boardHistoryStack: Stack<String>? = Stack()
     var pieceset = 0
-
     var tilesize = 0
 
     lateinit var gameBoard: GameBoard
@@ -74,7 +76,15 @@ class GameView(context: Context?): View(context){
         gameBoard = GameBoard(tilesize)
 
         drawBoard(canvas)
+
+        canvas?.save()
         drawPiece(canvas)
+
+        // put initial board state to board history stack
+        boardHistoryStack?.push(gameBoard.boardState)
+        canvas?.restore()
+
+        println("peek from board history stack: " + boardHistoryStack?.peek())
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {

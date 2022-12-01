@@ -9,18 +9,16 @@ class Piece {
         RABBIT, CAT, DOG, HORSE, CAMEL, ELEPHANT
     }
 
+    var color: PieceColor
+        set
+
+    var type: PieceType
+        set
+
     constructor(color: PieceColor, type: PieceType) {
         this.color = color
         this.type = type
     }
-
-    var color: PieceColor
-        set
-        get() = color
-
-    var type: PieceType
-        set
-        get() = type
 
     // representative letter to identify type and color of piece
     val letter: Char
