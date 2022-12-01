@@ -13,7 +13,7 @@ class Square {
 
     fun readSquare(): Char {
         return if(isEmpty) {
-            ' '
+            '.'
         } else piece!!.letter
     }
 

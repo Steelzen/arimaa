@@ -13,11 +13,12 @@ class GameBoard(tileSize: Int) {
 
     // set initial position of pieces
     init {
-        removeAllPieces()
         reset(tileSize)
     }
 
     fun reset(tileSize: Int) {
+        removeAllPieces()
+
         for(i in 0..7)
             for(k in 0..7) {
                 squares[i][k] = Square()

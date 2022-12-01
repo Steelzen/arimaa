@@ -84,7 +84,7 @@ class GameView(context: Context?): View(context){
         boardHistoryStack?.push(gameBoard.boardState)
         canvas?.restore()
 
-        println("peek from board history stack: " + boardHistoryStack?.peek())
+        println("Previous board state: " + boardHistoryStack?.peek())
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
