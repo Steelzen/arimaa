@@ -1,5 +1,6 @@
 package griffith.taehyung.assign2_arimaa
 
+import android.graphics.Point
 import android.graphics.Rect
 import griffith.taehyung.assign2_arimaa.Piece.PieceColor
 import griffith.taehyung.assign2_arimaa.Piece.PieceType
@@ -14,6 +15,16 @@ class GameBoard(tileSize: Int) {
     // set initial position of pieces
     init {
         reset(tileSize)
+    }
+
+    // retrieve the letter indicating color and level of pieces
+    fun getLetter(p: Point): Char {
+        return squares[p.x][p.y]!!.readSquare()
+    }
+
+    // make move piece from p1 to p2
+    fun movePiece(p1: Point, p2: Point) {
+        squares[p2.x][p2.y]!!.havePiece(squares[p1.x][p2.x]!!.dropPiece())
     }
 
     fun reset(tileSize: Int) {

@@ -82,9 +82,16 @@ class GameView(context: Context?): View(context){
 
         // put initial board state to board history stack
         boardHistoryStack?.push(gameBoard.boardState)
+
         canvas?.restore()
 
         println("Previous board state: " + boardHistoryStack?.peek())
+
+//        val p1: Point = Point(6,5)
+//        val p2: Point = Point(5,4)
+//
+//        gameBoard.movePiece(p1, p2)
+//        println("New position: " + gameBoard.boardState)
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
