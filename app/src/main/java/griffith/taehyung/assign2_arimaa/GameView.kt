@@ -60,7 +60,7 @@ class GameView(context: Context?): View(context){
         height = h
     }
 
-    // set to square view, based on height
+    // set to square view
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         if (widthMeasureSpec < heightMeasureSpec)
             super.onMeasure(

@@ -17,7 +17,7 @@
     tools:context=".MainActivity">
 
     <LinearLayout
-        android:id="@+id/topsection"
+        android:id="@+id/infosection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -30,25 +30,31 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Player: "
+                android:text="Player turn: "
                 android:backgroundTint="@android:color/holo_orange_light"
                 />
 
             <TextView
-                android:id="@+id/playerIndicator"
+                android:id="@+id/playerindicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Gold"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:paddingLeft="8dp"
                 />
 
         </LinearLayout>
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/midsection"
+    <LinearLayout
+        android:id="@+id/boardsection"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:orientation="vertical"
+        android:paddingTop="80dp"
         >
 
         <griffith.taehyung.assign2_arimaa.GameView
@@ -60,16 +66,48 @@
             android:layout_centerVertical="true"
             />
 
-    </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="40dp">
 
-    <LinearLayout
-        android:id="@+id/bottomsection"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_weight="1"
-        android:layout_below="@id/midsection">
+            <Button
+                android:id="@+id/movebtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Move"
+                android:layout_marginLeft="10dp"
+                android:backgroundTint="@android:color/holo_blue_dark"
+                />
 
+            <TextView
+                android:id="@+id/remainedmove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:paddingLeft="8dp"
+                />
+
+            <Button
+                android:id="@+id/backbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Back"
+                android:layout_marginLeft="30dp"
+                android:backgroundTint="@android:color/holo_red_light"/>
+
+            <Button
+                android:id="@+id/resetbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reset"
+                android:textStyle="italic"
+                android:layout_marginLeft="40dp"
+                android:backgroundTint="@android:color/holo_purple"/>
+
+        </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>
