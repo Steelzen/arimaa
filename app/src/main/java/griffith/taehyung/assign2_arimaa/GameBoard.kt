@@ -83,7 +83,7 @@ class GameBoard(tileSize: Int) {
     val boardState: String
         get() {
             var state = ""
-            for(i in 7 downTo 0)
+            for(i in 0..7)
                 for(k in 0 .. 7)
                     state += squares[i][k]?.readSquare()
             return state

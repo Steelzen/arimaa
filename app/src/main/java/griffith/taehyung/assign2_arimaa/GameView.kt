@@ -78,8 +78,8 @@ class GameView(context: Context?): View(context){
         drawBoard(canvas)
 
         canvas?.save()
-        drawPiece(canvas)
 
+        drawPiece(canvas)
         // put initial board state to board history stack
         boardHistoryStack?.push(gameBoard.boardState)
 
@@ -92,6 +92,12 @@ class GameView(context: Context?): View(context){
 //
 //        gameBoard.movePiece(p1, p2)
 //        println("New position: " + gameBoard.boardState)
+//
+//        canvas?.save()
+//
+//        drawPiece(canvas)
+//
+//        canvas?.restore()
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -146,39 +152,26 @@ class GameView(context: Context?): View(context){
         val silverHorse = bitmaps[R.drawable.horse_silver]!!
         val silverRabbit = bitmaps[R.drawable.rabbit_silver]!!
 
-        canvas?.drawBitmap(goldRabbit, null, gameBoard.rects[7][0]!!, paint)
-        canvas?.drawBitmap(goldRabbit, null, gameBoard.rects[7][1]!!, paint)
-        canvas?.drawBitmap(goldRabbit, null, gameBoard.rects[7][2]!!, paint)
-        canvas?.drawBitmap(goldRabbit, null, gameBoard.rects[7][3]!!, paint)
-        canvas?.drawBitmap(goldRabbit, null, gameBoard.rects[7][4]!!, paint)
-        canvas?.drawBitmap(goldRabbit, null, gameBoard.rects[7][5]!!, paint)
-        canvas?.drawBitmap(goldRabbit, null, gameBoard.rects[7][6]!!, paint)
-        canvas?.drawBitmap(goldRabbit, null, gameBoard.rects[7][7]!!, paint)
-        canvas?.drawBitmap(goldCat, null, gameBoard.rects[6][0]!!, paint)
-        canvas?.drawBitmap(goldDog, null, gameBoard.rects[6][1]!!, paint)
-        canvas?.drawBitmap(goldHorse, null, gameBoard.rects[6][2]!!, paint)
-        canvas?.drawBitmap(goldCamel, null, gameBoard.rects[6][3]!!, paint)
-        canvas?.drawBitmap(goldElephant, null, gameBoard.rects[6][4]!!, paint)
-        canvas?.drawBitmap(goldHorse, null, gameBoard.rects[6][5]!!, paint)
-        canvas?.drawBitmap(goldDog, null, gameBoard.rects[6][6]!!, paint)
-        canvas?.drawBitmap(goldCat, null, gameBoard.rects[6][7]!!, paint)
+        // dynamically draw pieces on board depending on board state
+        for (i in 0..7)
+            for(k in 0 .. 7) {
+                val letter = gameBoard.squares[i][k]?.readSquare() // letter of pieces
 
-        canvas?.drawBitmap(silverRabbit, null, gameBoard.rects[0][0]!!, paint)
-        canvas?.drawBitmap(silverRabbit, null, gameBoard.rects[0][1]!!, paint)
-        canvas?.drawBitmap(silverRabbit, null, gameBoard.rects[0][2]!!, paint)
-        canvas?.drawBitmap(silverRabbit, null, gameBoard.rects[0][3]!!, paint)
-        canvas?.drawBitmap(silverRabbit, null, gameBoard.rects[0][4]!!, paint)
-        canvas?.drawBitmap(silverRabbit, null, gameBoard.rects[0][5]!!, paint)
-        canvas?.drawBitmap(silverRabbit, null, gameBoard.rects[0][6]!!, paint)
-        canvas?.drawBitmap(silverRabbit, null, gameBoard.rects[0][7]!!, paint)
-        canvas?.drawBitmap(silverCat, null, gameBoard.rects[1][0]!!, paint)
-        canvas?.drawBitmap(silverDog, null, gameBoard.rects[1][1]!!, paint)
-        canvas?.drawBitmap(silverHorse, null, gameBoard.rects[1][2]!!, paint)
-        canvas?.drawBitmap(silverCamel, null, gameBoard.rects[1][3]!!, paint)
-        canvas?.drawBitmap(silverElephant, null, gameBoard.rects[1][4]!!, paint)
-        canvas?.drawBitmap(silverHorse, null, gameBoard.rects[1][5]!!, paint)
-        canvas?.drawBitmap(silverDog, null, gameBoard.rects[1][6]!!, paint)
-        canvas?.drawBitmap(silverCat, null, gameBoard.rects[1][7]!!, paint)
+                when(letter) {
+                    'R' -> canvas?.drawBitmap(goldRabbit, null, gameBoard.rects[i][k]!!, paint)
+                    'r' -> canvas?.drawBitmap(silverRabbit, null, gameBoard.rects[i][k]!!, paint)
+                    'C' -> canvas?.drawBitmap(goldCat, null, gameBoard.rects[i][k]!!, paint)
+                    'c' -> canvas?.drawBitmap(silverCat, null, gameBoard.rects[i][k]!!, paint)
+                    'D' -> canvas?.drawBitmap(goldDog, null, gameBoard.rects[i][k]!!, paint)
+                    'd' -> canvas?.drawBitmap(silverDog, null, gameBoard.rects[i][k]!!, paint)
+                    'H' -> canvas?.drawBitmap(goldHorse, null, gameBoard.rects[i][k]!!, paint)
+                    'h' -> canvas?.drawBitmap(silverHorse, null, gameBoard.rects[i][k]!!, paint)
+                    'M' -> canvas?.drawBitmap(goldCamel, null, gameBoard.rects[i][k]!!, paint)
+                    'm' -> canvas?.drawBitmap(silverCamel, null, gameBoard.rects[i][k]!!, paint)
+                    'E' -> canvas?.drawBitmap(goldElephant, null, gameBoard.rects[i][k]!!, paint)
+                    'e' -> canvas?.drawBitmap(silverElephant, null, gameBoard.rects[i][k]!!, paint)
+                }
+            }
     }
 
     fun loadBitmaps() {
