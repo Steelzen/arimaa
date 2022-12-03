@@ -42,7 +42,7 @@ class Piece {
             PieceType.ELEPHANT -> 6
         }
 
-    fun isLarger(piece: Piece): Boolean {
+    fun isHigher(piece: Piece): Boolean {
         return level > piece.level
     }
 }

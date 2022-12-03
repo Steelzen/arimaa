@@ -14,17 +14,16 @@ class GameView(context: Context?): View(context){
     private var width: Int? = 0
     private var height: Int?  = 0
 
-    var pieces: Bitmap? = null
     var moveable: Bitmap? = null
     var held: Bitmap? = null
 
     // history stack to keep a gameboard state
     var boardHistoryStack: Stack<String>? = Stack()
-    var pieceset = 0
     var tilesize = 0
 
     lateinit var gameBoard: GameBoard
 
+    // set of pieces images
     val imgResourceIDs = setOf(
         R.drawable.camel_gold,
         R.drawable.camel_silver,
@@ -41,6 +40,11 @@ class GameView(context: Context?): View(context){
     )
 
     val bitmaps = mutableMapOf<Int, Bitmap>()
+
+    // initial player: 1
+    var player: Int = 1
+    // total numbers of movements: 4
+    var movement: Int = 4
 
     constructor(context: Context, attrs: AttributeSet?) : this(context) {
         _attribs = attrs
@@ -89,8 +93,8 @@ class GameView(context: Context?): View(context){
 
 //        val p1: Point = Point(6,5)
 //        val p2: Point = Point(5,4)
-//
-//        gameBoard.movePiece(p1, p2)
+
+//        movePiece(p1, p2)
 //        println("New position: " + gameBoard.boardState)
 //
 //        canvas?.save()
@@ -101,6 +105,8 @@ class GameView(context: Context?): View(context){
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
+        // TODO: touch event to move depending on player
+        //       update screen
         return super.onTouchEvent(event)
     }
 
@@ -178,6 +184,16 @@ class GameView(context: Context?): View(context){
         imgResourceIDs.forEach {
             bitmaps[it] = BitmapFactory.decodeResource(resources, it)
         }
+    }
+
+    fun movePiece(p1: Point, p2: Point) {
+        gameBoard!!.movePiece(p1, p2)
+        invalidate()
+    }
+
+    fun resetGame() {
+        gameBoard!!.reset()
+        invalidate()
     }
 
     // function to represent array index from point

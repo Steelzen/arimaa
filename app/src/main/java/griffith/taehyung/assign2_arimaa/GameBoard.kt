@@ -11,10 +11,11 @@ class GameBoard(tileSize: Int) {
     // matrix according to squares
     var squares = Array(8) { arrayOfNulls<Square>(8) }
     var rects = Array(8) { arrayOfNulls<Rect>(8)}
+    val tileSize = tileSize
 
     // set initial position of pieces
     init {
-        reset(tileSize)
+        reset()
     }
 
     // retrieve the letter indicating color and level of pieces
@@ -27,7 +28,7 @@ class GameBoard(tileSize: Int) {
         squares[p2.x][p2.y]!!.havePiece(squares[p1.x][p2.x]!!.dropPiece())
     }
 
-    fun reset(tileSize: Int) {
+    fun reset() {
         removeAllPieces()
 
         for(i in 0..7)
