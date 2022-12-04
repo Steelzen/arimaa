@@ -11,6 +11,14 @@ class Square {
     var level: Int? = piece?.level
     val color: Piece.PieceColor? = piece?.color
 
+    // obtain rectangular by tilesize and squares matrix
+    fun rectFromSquare(tileSize: Int, rowInArray: Int, columnInArray: Int): Rect {
+        return Rect(columnInArray * tileSize,
+            rowInArray * tileSize,
+            (columnInArray + 1) * tileSize,
+            (rowInArray + 1) * tileSize )
+    }
+
     fun readSquare(): Char {
         return if(isEmpty) {
             '.'
@@ -30,13 +38,5 @@ class Square {
         isEmpty = true
 
         return droppedPiece
-    }
-
-    // obtain rectangular by tilesize and squares matrix
-    fun rectFromSquare(tileSize: Int, rowInArray: Int, columnInArray: Int): Rect {
-        return Rect(columnInArray * tileSize,
-            rowInArray * tileSize,
-            (columnInArray + 1) * tileSize,
-            (rowInArray + 1) * tileSize )
     }
 }

@@ -25,7 +25,7 @@ class GameBoard(tileSize: Int) {
 
     // make move piece from p1 to p2
     fun movePiece(p1: Point, p2: Point) {
-        squares[p2.x][p2.y]!!.havePiece(squares[p1.x][p2.x]!!.dropPiece())
+        squares[p2.x][p2.y]!!.havePiece(squares[p1.x][p1.y]!!.dropPiece())
     }
 
     fun reset() {

@@ -1,29 +1,39 @@
 package griffith.taehyung.assign2_arimaa
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.Button
 import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
     private var _resetbtn: Button? = null
     private var _movebtn: Button? = null
-    private var _backbtn: Button? = null
+    private var _undobtn: Button? = null
     private var playerStatus: TextView? = null
-    private var gameView: GameView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        gameView = findViewById(R.id.board)
-
         _resetbtn = findViewById<Button>(R.id.resetbtn)
         _movebtn = findViewById<Button>(R.id.movebtn)
-        _backbtn = findViewById<Button>(R.id.backbtn)
+        _undobtn = findViewById<Button>(R.id.undobtn)
 
         playerStatus = findViewById<TextView>(R.id.playerindicator)
+
+        val gameView: GameView = findViewById(R.id.board)
+
+        gameView.viewTreeObserver.addOnGlobalLayoutListener(
+            object : ViewTreeObserver.OnGlobalLayoutListener{
+                override fun onGlobalLayout() {
+                    gameView.setTileSize(gameView.width)
+                    println("TileSize: " + gameView.tilesize)
+                }
+            }
+        )
 
         _resetbtn?.setOnClickListener( object: View.OnClickListener {
             override fun onClick(v: View?) {
@@ -46,9 +56,9 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        _backbtn?. setOnClickListener(object : View.OnClickListener {
+        _undobtn?. setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                println("Back move")
+                println("Undo")
             }
         })
     }

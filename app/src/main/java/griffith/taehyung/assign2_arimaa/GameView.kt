@@ -2,7 +2,9 @@ package griffith.taehyung.assign2_arimaa
 
 import android.content.Context
 import android.graphics.*
+import android.nfc.Tag
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import java.util.Stack
@@ -23,14 +25,20 @@ open class GameView(context: Context?, attribs: AttributeSet?): View(context, at
     private var width: Int? = 0
     private var height: Int?  = 0
 
+    private var _pointers: Int = 0
+
     var moveable: Bitmap? = null
     var held: Bitmap? = null
+
+    // Point Origin and destination
+    var src: Point = Point()
+    var dst: Point = Point()
 
     // history stack to keep a gameboard state
     var boardHistoryStack: Stack<String>? = Stack()
     var tilesize = 0
 
-    lateinit var gameBoard: GameBoard
+    lateinit  var gameBoard: GameBoard
 
     // set of pieces images
     val imgResourceIDs = setOf(
@@ -54,9 +62,28 @@ open class GameView(context: Context?, attribs: AttributeSet?): View(context, at
         loadBitmaps()
     }
 
+    // initialize drawable for drawing pieces
+    val paint: Paint = Paint()
+
+    val goldElephant = bitmaps[R.drawable.elephant_gold]!!
+    val goldCamel = bitmaps[R.drawable.camel_gold]!!
+    val goldCat = bitmaps[R.drawable.cat_gold]!!
+    val goldDog = bitmaps[R.drawable.dog_gold]!!
+    val goldHorse = bitmaps[R.drawable.horse_gold]!!
+    val goldRabbit = bitmaps[R.drawable.rabbit_gold]!!
+
+    val silverElephant = bitmaps[R.drawable.elephant_silver]!!
+    val silverCamel = bitmaps[R.drawable.camel_silver]!!
+    val silverCat = bitmaps[R.drawable.cat_silver]!!
+    val silverDog = bitmaps[R.drawable.dog_silver]!!
+    val silverHorse = bitmaps[R.drawable.horse_silver]!!
+    val silverRabbit = bitmaps[R.drawable.rabbit_silver]!!
+
+
     fun setTileSize(windowWidth: Int) {
         tilesize = windowWidth / TILES
     }
+
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
@@ -73,21 +100,16 @@ open class GameView(context: Context?, attribs: AttributeSet?): View(context, at
         ) else super.onMeasure(heightMeasureSpec, heightMeasureSpec)
     }
 
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        setTileSize(width!!)
         gameBoard = GameBoard(tilesize)
 
         drawBoard(canvas)
-
-        canvas?.save()
-
         drawPiece(canvas)
         // put initial board state to board history stack
         boardHistoryStack?.push(gameBoard.boardState)
-
-        canvas?.restore()
 
         println("Previous board state: " + boardHistoryStack?.peek())
 
@@ -105,8 +127,120 @@ open class GameView(context: Context?, attribs: AttributeSet?): View(context, at
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        // TODO: touch event to move depending on player
-        //       update screen
+        event ?: return false
+
+        when(event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                src = Point(event.y.toInt() / tilesize, event.x.toInt() / tilesize)
+                println( "source: (${src.x}, ${src.y})")
+                if(gameBoard.squares[src.x][src.y]?.isEmpty == true)
+                    return false
+            }
+            MotionEvent.ACTION_MOVE -> {
+
+            }
+            MotionEvent.ACTION_UP -> {
+                dst = Point(event.y.toInt() / tilesize, event.x.toInt() / tilesize)
+                if(gameBoard.squares[dst.x][dst.y]?.isEmpty == false) {
+                    println("Cannot move to this")
+                    return false
+                }
+                movePiece(src, dst)
+                boardHistoryStack?.push(gameBoard.boardState)
+                println( "from (${src.x}, ${src.y}) to (${dst.x}, ${dst.y})")
+                println("new state: " + boardHistoryStack?.peek())
+            }
+        }
+
+//        if(_pointers <= 0) {
+//            if (event!!.actionMasked == MotionEvent.ACTION_DOWN) {
+//                src = Point(event.y.toInt() / tilesize, event.x.toInt() / tilesize)
+//                println("source: (${src.x}, ${src.y})")
+//                if (gameBoard.squares[src.x][src.y]?.isEmpty == true)
+//                    return false
+//            }
+//            else if(event!!.actionMasked == MotionEvent.ACTION_UP) {
+//                _pointers++
+//                println("pointers: " + _pointers)
+//            }
+//        }
+//
+//        if(_pointers > 0) {
+//            if(event!!.actionMasked == MotionEvent.ACTION_POINTER_DOWN) {
+//                dst = Point(event.y.toInt() / tilesize, event.x.toInt() / tilesize)
+//                if(gameBoard.squares[dst.x][dst.y]?.isEmpty == false) {
+//                    println("Cannot move to this")
+//                    return false
+//                } else if(event!!.actionMasked == MotionEvent.ACTION_UP) {
+//                    movePiece(src, dst)
+//                    _pointers--
+//                    boardHistoryStack?.push(gameBoard.boardState)
+//                    println( "from (${src.x}, ${src.y}) to (${dst.x}, ${dst.y})")
+//                    println("new state: " + boardHistoryStack?.peek())
+//                }
+//            }
+//        }
+
+//        if(event!!.actionMasked == MotionEvent.ACTION_DOWN){
+//            src = Point(event.y.toInt() / tilesize, event.x.toInt() / tilesize)
+//            println( "source: (${src.x}, ${src.y})")
+//            if(gameBoard.squares[src.x][src.y]?.isEmpty == true)
+//                return false
+//            if(event!!.actionMasked == MotionEvent.ACTION_UP) {}
+//            else if(event!!.actionMasked == MotionEvent.ACTION_DOWN){
+//                dst = Point(event.y.toInt() / tilesize, event.x.toInt() / tilesize)
+//                if(gameBoard.squares[dst.x][dst.y]?.isEmpty == false) {
+//                    println("Cannot move to this")
+//                    return false
+//                }
+//                movePiece(src, dst)
+//                boardHistoryStack?.push(gameBoard.boardState)
+//                println( "from (${src.x}, ${src.y}) to (${dst.x}, ${dst.y})")
+//                println("new state: " + boardHistoryStack?.peek())
+//            }
+//        }
+
+        moves--
+        return true
+
+//         when (event.action) {
+//            MotionEvent.ACTION_DOWN -> {
+//                val fromX = src.x * tilesize
+//                val fromy = src.y * tilesize
+//
+//                MotionEvent.ACTION_UP {
+//
+//                }
+//
+//            }
+//        }
+//
+//        return true
+
+
+//        if(event!!.actionMasked == MotionEvent.ACTION_DOWN){
+//            src = Point(event.x.toInt(), event.y.toInt())
+//            return true
+//        } else if(event!!.actionMasked == MotionEvent.ACTION_UP) {
+//            return true
+//        } else if(event!!.actionMasked == MotionEvent.ACTION_DOWN) {
+//            dst = Point(event.x.toInt(), event.y.toInt())
+//            return true
+//        }
+//
+//        // convert
+//        val srcT = Point(src!!.x * tilesize, src!!.y * tilesize)
+//        val dstT = Point(dst!!.x * tilesize, dst!!.y * tilesize)
+//
+//        if(gameBoard.squares[srcT.x][srcT.y]!!.isEmpty || gameBoard.squares[dstT.x][dstT.y]!!.isEmpty){
+//            println("no valid touch")
+//            return true
+//        }
+//
+//        movePiece(srcT, dstT)
+//        moves--
+//        invalidate()
+
         return super.onTouchEvent(event)
     }
 
@@ -142,22 +276,6 @@ open class GameView(context: Context?, attribs: AttributeSet?): View(context, at
     }
 
     fun drawPiece(canvas: Canvas?) {
-        val paint: Paint = Paint()
-
-        val goldElephant = bitmaps[R.drawable.elephant_gold]!!
-        val goldCamel = bitmaps[R.drawable.camel_gold]!!
-        val goldCat = bitmaps[R.drawable.cat_gold]!!
-        val goldDog = bitmaps[R.drawable.dog_gold]!!
-        val goldHorse = bitmaps[R.drawable.horse_gold]!!
-        val goldRabbit = bitmaps[R.drawable.rabbit_gold]!!
-
-        val silverElephant = bitmaps[R.drawable.elephant_silver]!!
-        val silverCamel = bitmaps[R.drawable.camel_silver]!!
-        val silverCat = bitmaps[R.drawable.cat_silver]!!
-        val silverDog = bitmaps[R.drawable.dog_silver]!!
-        val silverHorse = bitmaps[R.drawable.horse_silver]!!
-        val silverRabbit = bitmaps[R.drawable.rabbit_silver]!!
-
         // dynamically draw pieces on board depending on board state
         for (i in 0..7)
             for(k in 0 .. 7) {
@@ -188,7 +306,6 @@ open class GameView(context: Context?, attribs: AttributeSet?): View(context, at
 
     fun movePiece(p1: Point, p2: Point) {
         gameBoard!!.movePiece(p1, p2)
-        invalidate()
     }
 
     fun resetGame() {
@@ -202,8 +319,9 @@ open class GameView(context: Context?, attribs: AttributeSet?): View(context, at
 
     }
 
+
     // function to represent array index from point
-    fun gerArrayIndexFromPoint (num: Int): Int {
+    fun getArrayIndexFromPoint (num: Int): Int {
         return num / tilesize
     }
 

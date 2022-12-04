@@ -45,7 +45,6 @@
                 />
 
         </LinearLayout>
-
     </LinearLayout>
 
     <LinearLayout
@@ -92,10 +91,10 @@
                 />
 
             <Button
-                android:id="@+id/backbtn"
+                android:id="@+id/undobtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Back"
+                android:text="Undo"
                 android:layout_marginLeft="30dp"
                 android:backgroundTint="@android:color/holo_red_light"/>
 
