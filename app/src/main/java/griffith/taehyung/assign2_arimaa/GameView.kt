@@ -7,9 +7,18 @@ import android.view.MotionEvent
 import android.view.View
 import java.util.Stack
 
-class GameView(context: Context?): View(context){
+open class GameView(context: Context?, attribs: AttributeSet?): View(context, attribs){
     private var _context: Context? = context
     private var _attribs: AttributeSet? = null
+
+    enum class GameStatus {
+        GOLDTURN, SILVERTURN, GOLDWIN, SILVERWIN
+    }
+
+    var gameStatus = GameStatus.GOLDTURN
+
+    // total numbers of moves: 4
+    var moves: Int = 4
 
     private var width: Int? = 0
     private var height: Int?  = 0
@@ -40,15 +49,6 @@ class GameView(context: Context?): View(context){
     )
 
     val bitmaps = mutableMapOf<Int, Bitmap>()
-
-    // initial player: 1
-    var player: Int = 1
-    // total numbers of movements: 4
-    var movement: Int = 4
-
-    constructor(context: Context, attrs: AttributeSet?) : this(context) {
-        _attribs = attrs
-    }
 
     init {
         loadBitmaps()
@@ -193,7 +193,13 @@ class GameView(context: Context?): View(context){
 
     fun resetGame() {
         gameBoard!!.reset()
+        gameStatus = GameStatus.GOLDTURN
+        moves = 4
         invalidate()
+    }
+
+    fun updateGameStatus() {
+
     }
 
     // function to represent array index from point
