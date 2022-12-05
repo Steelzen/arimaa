@@ -37,7 +37,6 @@ class MainActivity : AppCompatActivity() {
             object : ViewTreeObserver.OnGlobalLayoutListener{
                 override fun onGlobalLayout() {
                     gameView.setTileSize(gameView.width)
-                    println("TileSize: " + gameView.tilesize)
                 }
             }
         )

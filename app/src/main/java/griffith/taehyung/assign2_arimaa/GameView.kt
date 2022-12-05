@@ -122,6 +122,10 @@ class GameView(context: Context?, attribs: AttributeSet?): View(context, attribs
                     println("You can not move opposite pieces")
                     return false
                 }
+                if(moves <= 0) {
+                    println("You can not move anymore because remained move is zero")
+                    return false
+                }
             }
             MotionEvent.ACTION_MOVE -> {
 
