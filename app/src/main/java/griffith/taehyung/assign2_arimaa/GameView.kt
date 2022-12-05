@@ -25,9 +25,6 @@ class GameView(context: Context?, attribs: AttributeSet?): View(context, attribs
 
     private var _pointers: Int = 0
 
-    var moveable: Bitmap? = null
-    var held: Bitmap? = null
-
     // Point Origin and destination
     var src: Point = Point()
     var dst: Point = Point()
