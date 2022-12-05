@@ -75,8 +75,6 @@ class MainActivity : AppCompatActivity() {
                 movements!!.setText(gameView.moves.toString())
             }
         })
-
-
     }
 
     fun setPlayer() {
@@ -90,5 +88,4 @@ class MainActivity : AppCompatActivity() {
         else
             playerStatus?.setText("")
     }
-
 }

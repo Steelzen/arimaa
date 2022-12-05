@@ -12,7 +12,7 @@ class GameView(context: Context?, attribs: AttributeSet?): View(context, attribs
     private var _attribs: AttributeSet? = null
 
     enum class GameStatus {
-        GOLDTURN, SILVERTURN, GOLDWIN, SILVERWIN
+        GOLDTURN, SILVERTURN
     }
 
     var gameStatus = GameStatus.GOLDTURN
@@ -118,6 +118,10 @@ class GameView(context: Context?, attribs: AttributeSet?): View(context, attribs
                 println( "source: (${src.x}, ${src.y})")
                 if(gameBoard.squares[src.x][src.y]?.isEmpty == true)
                     return false
+                if(gameBoard.squares[src.x][src.y]?.piece?.color != statusToPieceColor()) {
+                    println("You can not move opposite pieces")
+                    return false
+                }
             }
             MotionEvent.ACTION_MOVE -> {
 
@@ -219,6 +223,13 @@ class GameView(context: Context?, attribs: AttributeSet?): View(context, attribs
 
     fun updateGameStatus() {
 
+    }
+
+    fun statusToPieceColor(): Piece.PieceColor {
+        if(gameStatus == GameStatus.GOLDTURN)
+            return Piece.PieceColor.GOLD
+        else
+            return Piece.PieceColor.SILVER
     }
 
     /** constant values **/

@@ -6,10 +6,6 @@ class Square {
     var piece: Piece? = null
     var isEmpty = true
 
-    // data to identify the type of pieces
-    var level: Int? = piece?.level
-    val color: Piece.PieceColor? = piece?.color
-
     // obtain rectangular by tilesize and squares matrix
     fun rectFromSquare(tileSize: Int, rowInArray: Int, columnInArray: Int): Rect {
         return Rect(columnInArray * tileSize,
