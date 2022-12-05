@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
     private var _movebtn: Button? = null
     private var _undobtn: Button? = null
     private var playerStatus: TextView? = null
+    private var movements: TextView? = null
     private lateinit var gameView: GameView
 
 
@@ -27,6 +28,10 @@ class MainActivity : AppCompatActivity() {
         _undobtn = findViewById<Button>(R.id.undobtn)
 
         playerStatus = findViewById<TextView>(R.id.playerindicator)
+        movements = findViewById<TextView>(R.id.remainedmove)
+
+        println("moves: " + gameView.moves.toString())
+        movements?.setText(gameView.moves.toString())
 
         gameView.viewTreeObserver.addOnGlobalLayoutListener(
             object : ViewTreeObserver.OnGlobalLayoutListener{
@@ -41,6 +46,7 @@ class MainActivity : AppCompatActivity() {
             override fun onClick(v: View?) {
                 gameView?.resetGame()
                 setPlayer()
+                movements?.setText(gameView.moves.toString())
                 println("reset the game")
             }
         })
@@ -61,8 +67,16 @@ class MainActivity : AppCompatActivity() {
         _undobtn?. setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 println("Undo")
+
+                if(gameView.moves < 4) {
+                    gameView.moves++
+                }
+
+                movements!!.setText(gameView.moves.toString())
             }
         })
+
+
     }
 
     fun setPlayer() {

@@ -133,12 +133,12 @@ class GameView(context: Context?, attribs: AttributeSet?): View(context, attribs
                     return false
                 }
                 movePiece(src,dst)
+                moves--
                 boardHistoryStack?.push(gameBoard.boardState)
                 println("from (${src.x}, ${src.y}) to (${dst.x}, ${dst.y})")
                 println("new state: " + boardHistoryStack?.peek())
             }
         }
-        moves--
         isUpdated = true
         invalidate()
         return true
