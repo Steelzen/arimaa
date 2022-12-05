@@ -8,7 +8,7 @@ import android.view.ViewTreeObserver
 import android.widget.Button
 import android.widget.TextView
 
-class MainActivity : AppCompatActivity(), GameInterface {
+class MainActivity : AppCompatActivity() {
     private var _resetbtn: Button? = null
     private var _movebtn: Button? = null
     private var _undobtn: Button? = null
@@ -27,7 +27,6 @@ class MainActivity : AppCompatActivity(), GameInterface {
         _undobtn = findViewById<Button>(R.id.undobtn)
 
         playerStatus = findViewById<TextView>(R.id.playerindicator)
-        gameView.gameInterface = this
 
         gameView.viewTreeObserver.addOnGlobalLayoutListener(
             object : ViewTreeObserver.OnGlobalLayoutListener{
@@ -78,8 +77,4 @@ class MainActivity : AppCompatActivity(), GameInterface {
             playerStatus?.setText("")
     }
 
-    override fun movePiece(p1: Point, p2: Point) {
-        gameView.movePiece(p1,p2)
-//        gameView.invalidate()
-    }
 }

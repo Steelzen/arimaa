@@ -10,7 +10,6 @@ import java.util.Stack
 class GameView(context: Context?, attribs: AttributeSet?): View(context, attribs){
     private var _context: Context? = context
     private var _attribs: AttributeSet? = null
-//    var canvas: Canvas = Canvas()
 
     enum class GameStatus {
         GOLDTURN, SILVERTURN, GOLDWIN, SILVERWIN
@@ -39,7 +38,6 @@ class GameView(context: Context?, attribs: AttributeSet?): View(context, attribs
     var isUpdated: Boolean = false
 
     lateinit var gameBoard: GameBoard
-    var gameInterface: GameInterface? = null
 
     // set of pieces images
     val imgResourceIDs = setOf(
@@ -81,10 +79,9 @@ class GameView(context: Context?, attribs: AttributeSet?): View(context, attribs
     val silverRabbit = bitmaps[R.drawable.rabbit_silver]!!
 
 
-    fun setTileSize(windowWidth: Int) {
-        tilesize = windowWidth / TILES
+    fun setTileSize(width: Int) {
+        tilesize = width / TILES
     }
-
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
@@ -112,7 +109,7 @@ class GameView(context: Context?, attribs: AttributeSet?): View(context, attribs
 
         // put initial board state to board history stack
         boardHistoryStack?.push(gameBoard.boardState)
-        println("Previous board state: " + boardHistoryStack?.peek())
+        println("Game state: " + boardHistoryStack?.peek())
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -138,7 +135,7 @@ class GameView(context: Context?, attribs: AttributeSet?): View(context, attribs
                     println("Cannot move to this")
                     return false
                 }
-                gameInterface?.movePiece(src,dst)
+                movePiece(src,dst)
                 boardHistoryStack?.push(gameBoard.boardState)
                 println("from (${src.x}, ${src.y}) to (${dst.x}, ${dst.y})")
                 println("new state: " + boardHistoryStack?.peek())
@@ -179,10 +176,6 @@ class GameView(context: Context?, attribs: AttributeSet?): View(context, attribs
                     strokePaint)
             }
         }
-    }
-
-    fun reDrawPieces() {
-
     }
 
     fun drawPieces(canvas: Canvas?) {

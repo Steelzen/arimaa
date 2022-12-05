@@ -3,7 +3,6 @@ package griffith.taehyung.assign2_arimaa
 import android.graphics.Rect
 
 class Square {
-    // design trap tile (boolean)
     var piece: Piece? = null
     var isEmpty = true
 
