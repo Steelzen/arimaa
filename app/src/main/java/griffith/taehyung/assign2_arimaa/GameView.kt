@@ -2,16 +2,15 @@ package griffith.taehyung.assign2_arimaa
 
 import android.content.Context
 import android.graphics.*
-import android.nfc.Tag
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import java.util.Stack
 
-open class GameView(context: Context?, attribs: AttributeSet?): View(context, attribs){
+class GameView(context: Context?, attribs: AttributeSet?): View(context, attribs){
     private var _context: Context? = context
     private var _attribs: AttributeSet? = null
+//    var canvas: Canvas = Canvas()
 
     enum class GameStatus {
         GOLDTURN, SILVERTURN, GOLDWIN, SILVERWIN
@@ -37,8 +36,10 @@ open class GameView(context: Context?, attribs: AttributeSet?): View(context, at
     // history stack to keep a gameboard state
     var boardHistoryStack: Stack<String>? = Stack()
     var tilesize = 0
+    var isUpdated: Boolean = false
 
-    lateinit  var gameBoard: GameBoard
+    lateinit var gameBoard: GameBoard
+    var gameInterface: GameInterface? = null
 
     // set of pieces images
     val imgResourceIDs = setOf(
@@ -100,30 +101,18 @@ open class GameView(context: Context?, attribs: AttributeSet?): View(context, at
         ) else super.onMeasure(heightMeasureSpec, heightMeasureSpec)
     }
 
+    override fun onDraw(canvas: Canvas?) {
+        canvas ?: return
 
-    override fun onDraw(canvas: Canvas) {
-        super.onDraw(canvas)
-
-        gameBoard = GameBoard(tilesize)
+        if(!isUpdated)
+            gameBoard = GameBoard(tilesize)
 
         drawBoard(canvas)
-        drawPiece(canvas)
+        drawPieces(canvas)
+
         // put initial board state to board history stack
         boardHistoryStack?.push(gameBoard.boardState)
-
         println("Previous board state: " + boardHistoryStack?.peek())
-
-//        val p1: Point = Point(6,5)
-//        val p2: Point = Point(5,4)
-
-//        movePiece(p1, p2)
-//        println("New position: " + gameBoard.boardState)
-//
-//        canvas?.save()
-//
-//        drawPiece(canvas)
-//
-//        canvas?.restore()
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -141,107 +130,24 @@ open class GameView(context: Context?, attribs: AttributeSet?): View(context, at
             }
             MotionEvent.ACTION_UP -> {
                 dst = Point(event.y.toInt() / tilesize, event.x.toInt() / tilesize)
+                if(dst.x > 7 || dst.x < 0 || dst.y > 7 || dst.y < 0){
+                    println("Invalid Move")
+                    return false
+                }
                 if(gameBoard.squares[dst.x][dst.y]?.isEmpty == false) {
                     println("Cannot move to this")
                     return false
                 }
-                movePiece(src, dst)
+                gameInterface?.movePiece(src,dst)
                 boardHistoryStack?.push(gameBoard.boardState)
-                println( "from (${src.x}, ${src.y}) to (${dst.x}, ${dst.y})")
+                println("from (${src.x}, ${src.y}) to (${dst.x}, ${dst.y})")
                 println("new state: " + boardHistoryStack?.peek())
             }
         }
-
-//        if(_pointers <= 0) {
-//            if (event!!.actionMasked == MotionEvent.ACTION_DOWN) {
-//                src = Point(event.y.toInt() / tilesize, event.x.toInt() / tilesize)
-//                println("source: (${src.x}, ${src.y})")
-//                if (gameBoard.squares[src.x][src.y]?.isEmpty == true)
-//                    return false
-//            }
-//            else if(event!!.actionMasked == MotionEvent.ACTION_UP) {
-//                _pointers++
-//                println("pointers: " + _pointers)
-//            }
-//        }
-//
-//        if(_pointers > 0) {
-//            if(event!!.actionMasked == MotionEvent.ACTION_POINTER_DOWN) {
-//                dst = Point(event.y.toInt() / tilesize, event.x.toInt() / tilesize)
-//                if(gameBoard.squares[dst.x][dst.y]?.isEmpty == false) {
-//                    println("Cannot move to this")
-//                    return false
-//                } else if(event!!.actionMasked == MotionEvent.ACTION_UP) {
-//                    movePiece(src, dst)
-//                    _pointers--
-//                    boardHistoryStack?.push(gameBoard.boardState)
-//                    println( "from (${src.x}, ${src.y}) to (${dst.x}, ${dst.y})")
-//                    println("new state: " + boardHistoryStack?.peek())
-//                }
-//            }
-//        }
-
-//        if(event!!.actionMasked == MotionEvent.ACTION_DOWN){
-//            src = Point(event.y.toInt() / tilesize, event.x.toInt() / tilesize)
-//            println( "source: (${src.x}, ${src.y})")
-//            if(gameBoard.squares[src.x][src.y]?.isEmpty == true)
-//                return false
-//            if(event!!.actionMasked == MotionEvent.ACTION_UP) {}
-//            else if(event!!.actionMasked == MotionEvent.ACTION_DOWN){
-//                dst = Point(event.y.toInt() / tilesize, event.x.toInt() / tilesize)
-//                if(gameBoard.squares[dst.x][dst.y]?.isEmpty == false) {
-//                    println("Cannot move to this")
-//                    return false
-//                }
-//                movePiece(src, dst)
-//                boardHistoryStack?.push(gameBoard.boardState)
-//                println( "from (${src.x}, ${src.y}) to (${dst.x}, ${dst.y})")
-//                println("new state: " + boardHistoryStack?.peek())
-//            }
-//        }
-
         moves--
+        isUpdated = true
+        invalidate()
         return true
-
-//         when (event.action) {
-//            MotionEvent.ACTION_DOWN -> {
-//                val fromX = src.x * tilesize
-//                val fromy = src.y * tilesize
-//
-//                MotionEvent.ACTION_UP {
-//
-//                }
-//
-//            }
-//        }
-//
-//        return true
-
-
-//        if(event!!.actionMasked == MotionEvent.ACTION_DOWN){
-//            src = Point(event.x.toInt(), event.y.toInt())
-//            return true
-//        } else if(event!!.actionMasked == MotionEvent.ACTION_UP) {
-//            return true
-//        } else if(event!!.actionMasked == MotionEvent.ACTION_DOWN) {
-//            dst = Point(event.x.toInt(), event.y.toInt())
-//            return true
-//        }
-//
-//        // convert
-//        val srcT = Point(src!!.x * tilesize, src!!.y * tilesize)
-//        val dstT = Point(dst!!.x * tilesize, dst!!.y * tilesize)
-//
-//        if(gameBoard.squares[srcT.x][srcT.y]!!.isEmpty || gameBoard.squares[dstT.x][dstT.y]!!.isEmpty){
-//            println("no valid touch")
-//            return true
-//        }
-//
-//        movePiece(srcT, dstT)
-//        moves--
-//        invalidate()
-
-        return super.onTouchEvent(event)
     }
 
     fun drawBoard(canvas: Canvas?) {
@@ -275,7 +181,12 @@ open class GameView(context: Context?, attribs: AttributeSet?): View(context, at
         }
     }
 
-    fun drawPiece(canvas: Canvas?) {
+    fun reDrawPieces() {
+
+    }
+
+    fun drawPieces(canvas: Canvas?) {
+        canvas?.save()
         // dynamically draw pieces on board depending on board state
         for (i in 0..7)
             for(k in 0 .. 7) {
@@ -296,6 +207,7 @@ open class GameView(context: Context?, attribs: AttributeSet?): View(context, at
                     'e' -> canvas?.drawBitmap(silverElephant, null, gameBoard.rects[i][k]!!, paint)
                 }
             }
+        canvas?.restore()
     }
 
     fun loadBitmaps() {
@@ -319,42 +231,12 @@ open class GameView(context: Context?, attribs: AttributeSet?): View(context, at
 
     }
 
-
-    // function to represent array index from point
-    fun getArrayIndexFromPoint (num: Int): Int {
-        return num / tilesize
-    }
-
-    // function to convert Point to Rect
-    fun getRectFromPoint(p: Point): Rect {
-        return Rect(p!!.x * tilesize,
-            p!!.y * tilesize,
-            (p!!.x + 1) * tilesize,
-            (p!!.y + 1 ) * tilesize)
-    }
-
-    fun getPointFromPieceLetter(pieceLetter: Char): Point? {
-        return when (pieceLetter) {
-            'E' -> Point(0, 0)
-            'e' -> Point(0, 1)
-            'M' -> Point(1, 0)
-            'm' -> Point(1, 1)
-            'H' -> Point(2, 0)
-            'h' -> Point(2, 1)
-            'D' -> Point(3, 0)
-            'd' -> Point(3, 1)
-            'C' -> Point(4, 0)
-            'c' -> Point(4, 1)
-            'R' -> Point(5, 0)
-            'r' -> Point(5, 1)
-            else -> null
-        }
-    }
-
     /** constant values **/
     companion object {
         const val TILES = 8
     }
+
+
 }
 
 
